@@ -1,73 +1,75 @@
-![](./resources/official_armmbed_example_badge.png)
-# Blinky Mbed OS example
+**README.md**
+================
 
-The example project is part of the [Arm Mbed OS Official Examples](https://os.mbed.com/code/) and is the [getting started example for Mbed OS](https://os.mbed.com/docs/mbed-os/latest/quick-start/index.html). It contains an application that repeatedly blinks an LED on supported [Mbed boards](https://os.mbed.com/platforms/).
+Table of Contents
+-----------------
 
-You can build the project with all supported [Mbed OS build tools](https://os.mbed.com/docs/mbed-os/latest/tools/index.html). However, this example project specifically refers to the command-line interface tools, [Arm Mbed CLI 1](https://github.com/ARMmbed/mbed-cli#installing-mbed-cli) and [Mbed CLI 2](https://github.com/ARMmbed/mbed-tools#installation).
+* [Project Overview](#project-overview)
+* [Hardware Requirements](#hardware-requirements)
+* [Software Requirements](#software-requirements)
+* [Project Structure](#project-structure)
+* [Code Explanation](#code-explanation)
+* [Usage](#usage)
+* [Troubleshooting](#troubleshooting)
+* [Demonstration Video](#demonstration-video)
 
-(Note: To see a rendered example you can import into the Arm Online Compiler, please see our [import quick start](https://os.mbed.com/docs/mbed-os/latest/quick-start/online-with-the-online-compiler.html#importing-the-code).)
+### Project Overview
 
-## Mbed OS build tools
+This project is a simple digital clock with a voltage display feature. It uses an mbed-enabled microcontroller to drive a 4-digit 7-segment display via a shift register. The clock can be reset using a button, and the voltage reading from a potentiometer can be displayed when another button is pressed.
 
-### Mbed CLI 2
-Starting with version 6.5, Mbed OS uses Mbed CLI 2. It uses Ninja as a build system, and CMake to generate the build environment and manage the build process in a compiler-independent manner. If you are working with Mbed OS version prior to 6.5 then check the section [Mbed CLI 1](#mbed-cli-1).
-1. [Install Mbed CLI 2](https://os.mbed.com/docs/mbed-os/latest/build-tools/install-or-upgrade.html).
-1. From the command-line, import the example: `mbed-tools import mbed-os-example-blinky`
-1. Change the current directory to where the project was imported.
+### Hardware Requirements
 
-### Mbed CLI 1
-1. [Install Mbed CLI 1](https://os.mbed.com/docs/mbed-os/latest/quick-start/offline-with-mbed-cli.html).
-1. From the command-line, import the example: `mbed import mbed-os-example-blinky`
-1. Change the current directory to where the project was imported.
+* mbed-enabled microcontroller (e.g., NUCLEO-F401RE)
+* 4-digit 7-segment display (common anode)
+* Shift register (e.g., 74HC595)
+* 3 buttons (active low)
+* 1 potentiometer
+* Jumper wires
+* Breadboard
 
-## Application functionality
+### Software Requirements
 
-The `main()` function is the single thread in the application. It toggles the state of a digital output connected to an LED on the board.
+* mbed OS
+* C++ compiler (e.g., ARM Compiler)
 
-**Note**: This example requires a target with RTOS support, i.e. one with `rtos` declared in `supported_application_profiles` in `targets/targets.json` in [mbed-os](https://github.com/ARMmbed/mbed-os). For non-RTOS targets (usually with small memory sizes), please use [mbed-os-example-blinky-baremetal](https://github.com/ARMmbed/mbed-os-example-blinky-baremetal) instead.
+### Project Structure
 
-## Building and running
+* `main.cpp`: The main source file containing the clock and voltage display logic.
 
-1. Connect a USB cable between the USB port on the board and the host computer.
-1. Run the following command to build the example project and program the microcontroller flash memory:
+### Code Explanation
 
-    * Mbed CLI 2
+The code is written in C++ and uses the mbed OS API. It initializes the shift register pins, button inputs, and potentiometer input. The `updateTime` function increments the seconds and minutes counters every second. The `displayNumber` function displays a 4-digit number on the 7-segment display with optional decimal point.
 
-    ```bash
-    $ mbed-tools compile -m <TARGET> -t <TOOLCHAIN> --flash
-    ```
+The main loop checks for button presses and displays either the time or the voltage reading accordingly.
 
-    * Mbed CLI 1
+### Usage
 
-    ```bash
-    $ mbed compile -m <TARGET> -t <TOOLCHAIN> --flash
-    ```
+1. Connect the hardware components as described in the code comments.
+2. Build and flash the code to the mbed-enabled microcontroller.
+3. Press the reset button (S1) to reset the clock.
+4. Press the voltage display button (S3) to display the voltage reading from the potentiometer.
+5. Release the voltage display button to return to displaying the time.
 
-Your PC may take a few minutes to compile your code.
+### Troubleshooting
 
-The binary is located at:
-* **Mbed CLI 2** - `./cmake_build/<TARGET>/develop/<TOOLCHAIN>/mbed-os-example-blinky.bin`
-* **Mbed CLI 1** - `./BUILD/<TARGET>/<TOOLCHAIN>/mbed-os-example-blinky.bin`
+* Ensure that the shift register is properly connected to the microcontroller and the 7-segment display.
+* Check that the button inputs are configured correctly (active low).
+* Verify that the potentiometer is connected to the correct analog input pin.
 
-Alternatively, you can manually copy the binary to the board, which you mount on the host computer over USB.
+### Demonstration Video
 
-## Expected output
-The LED on your target turns on and off every 500 milliseconds.
+Watch a demonstration of the project in action: [Digital Clock with Voltage Display](https://drive.google.com/file/d/1iVbgcvUSfVfV6eocwDie0zYAPwV4wspX/view?usp=sharing)
 
+**Example Use Cases**
 
-## Troubleshooting
-If you have problems, you can review the [documentation](https://os.mbed.com/docs/latest/tutorials/debugging.html) for suggestions on what could be wrong and how to fix it.
+* Use this project as a simple digital clock with a voltage display feature.
+* Modify the code to display other types of data (e.g., temperature, humidity) using different sensors.
+* Add more features (e.g., alarm, timer) to the clock.
 
-## Related Links
+**Commit Message Guidelines**
 
-* [Mbed OS Stats API](https://os.mbed.com/docs/latest/apis/mbed-statistics.html).
-* [Mbed OS Configuration](https://os.mbed.com/docs/latest/reference/configuration.html).
-* [Mbed OS Serial Communication](https://os.mbed.com/docs/latest/tutorials/serial-communication.html).
-* [Mbed OS bare metal](https://os.mbed.com/docs/mbed-os/latest/reference/mbed-os-bare-metal.html).
-* [Mbed boards](https://os.mbed.com/platforms/).
-
-### License and contributions
-
-The software is provided under Apache-2.0 license. Contributions to this project are accepted under the same license. Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for more info.
-
-This project contains code from other projects. The original license text is included in those source files. They must comply with our license guide.
+* Follow the standard professional guidelines for commit messages, such as:
+	+ Use the imperative mood (e.g., "Add feature" instead of "Added feature").
+	+ Keep the first line concise (<50 characters).
+	+ Use a blank line to separate the summary from the body.
+	+ Use bullet points in the body to list changes or features.
